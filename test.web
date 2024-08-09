@@ -1,0 +1,62 @@
+openapi: 3.0.0
+info:
+  title: Bill24 Consumer Information API
+  description: API to validate if a consumer exists in the biller system and retrieve consumer information.
+  version: 1.0.0
+
+servers:
+  - url: https://api.mybiller.com
+
+paths:
+  /consumer/validate:
+    post:
+      summary: Validate consumer existence and retrieve information
+      operationId: validateConsumer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                biller_code:
+                  type: string
+                  description: Biller Code
+                  example: "1111"
+                consumer_code:
+                  type: string
+                  description: Consumer code for inquiry information
+                  example: "C000001"
+              required:
+                - biller_code
+                - consumer_code
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: Response Code
+                  message:
+                    type: string
+                    description: Response message in English
+                  message_kh:
+                    type: string
+                    description: Response message in Khmer
+                  data:
+                    type: object
+                    description: Data object
+
+components:
+  securitySchemes:
+    BillerToken:
+      type: apiKey
+      in: header
+      name: token
+
+security:
+  - BillerToken: []
